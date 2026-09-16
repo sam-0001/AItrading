@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  trading_lab:
+    build: .
+    restart: always
+    environment:
+      - DATABASE_URL=postgres://user:pass@db:5432/trading_lab
+      - SMTP_SERVER=smtp.example.com
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: trading_lab
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
