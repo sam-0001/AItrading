@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class DashboardHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path == '/':
+        if self.path == '/' or self.path == '/index.html':
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -26,6 +26,9 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             
             html_content = dashboard.generate_html()
             self.wfile.write(html_content.encode('utf-8'))
+        elif self.path == '/favicon.ico':
+            self.send_response(204) # No Content
+            self.end_headers()
         else:
             self.send_response(404)
             self.end_headers()
