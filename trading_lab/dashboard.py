@@ -131,9 +131,9 @@ class DashboardGenerator:
         ])
         
         for t in trades:
-            side = t.get("side", "N/A")
+            side = dict(t).get("side", "N/A") if hasattr(t, "keys") else t["side"]
             side_badge = "badge-buy" if side == "BUY" else "badge-sell" if side == "SELL" else "bg-slate-700 text-slate-300"
-            pnl_val = float(t.get('pnl', 0))
+            pnl_val = float(dict(t).get('pnl', 0) if hasattr(t, "keys") else t["pnl"])
             pnl_color = "text-emerald-400" if pnl_val > 0 else "text-red-400" if pnl_val < 0 else "text-slate-300"
             html.append(f"                            <tr class='hover:bg-slate-800/50 transition-colors'>")
             html.append(f"                                <td class='py-3 px-2 font-medium'>{t['symbol']}</td>")
@@ -161,7 +161,7 @@ class DashboardGenerator:
         ])
         
         for e in events:
-            evt_type = e.get('event_type', 'UNKNOWN')
+            evt_type = dict(e).get('event_type', 'UNKNOWN') if hasattr(e, "keys") else e["event_type"]
             html.append(f"                    <div class='p-3 rounded-xl bg-slate-900/50 border border-slate-800'>")
             html.append(f"                        <div class='flex justify-between items-start mb-1'>")
             html.append(f"                            <span class='text-xs font-bold text-blue-400'>{evt_type}</span>")
